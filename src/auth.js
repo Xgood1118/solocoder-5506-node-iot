@@ -97,7 +97,7 @@ function hmacAuthMiddleware(req, res, next) {
     path: req.originalUrl,
     timestamp,
     nonce,
-    body: req.body,
+    body: req.rawBody,
   });
 
   const expected = computeHmac(device.presharedKey, canonical);

@@ -31,11 +31,7 @@ function idempotentMiddlewareFactory(extractKey) {
       logger.info({ key }, 'Idempotent duplicate request, returning 200');
       return res.status(200).json({ status: 'ok', idempotent: true });
     }
-    res.on('finish', () => {
-      if (res.statusCode >= 200 && res.statusCode < 300) {
-        idempotentCache.set(key, 1);
-      }
-    });
+    idempotentCache.set(key, 1);
     next();
   };
 }

@@ -13,7 +13,18 @@ function createApp() {
   app.disable('x-powered-by');
   app.set('trust proxy', true);
 
-  app.use(express.json({ limit: '1mb' }));
+  app.use(
+    express.json({
+      limit: '1mb',
+      verify: (req, res, buf, encoding) => {
+        try {
+          req.rawBody = buf.toString(encoding || 'utf8');
+        } catch (_e) {
+          req.rawBody = '';
+        }
+      },
+    })
+  );
 
   app.use(shutdownMiddleware);
 
